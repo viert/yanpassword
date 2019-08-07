@@ -1,7 +1,6 @@
 package client
 
 import (
-	"crypter"
 	"fmt"
 	"os"
 	"path"
@@ -19,8 +18,8 @@ const (
 )
 
 // CheckAuth checks auth with a dummy yandex webdav request
-func CheckAuth(authData *crypter.AuthData) error {
-	cli := gowebdav.NewClient(webdavURL, authData.Username, authData.Password)
+func CheckAuth(username string, password string) error {
+	cli := gowebdav.NewClient(webdavURL, username, password)
 	_, err := cli.ReadDir("/")
 	if err != nil {
 		return err
@@ -34,9 +33,9 @@ type PassdbClient struct {
 }
 
 // NewPassdbClient creates a new instance of PassdbClient
-func NewPassdbClient(authData *crypter.AuthData) *PassdbClient {
+func NewPassdbClient(username string, password string) *PassdbClient {
 	pdbc := new(PassdbClient)
-	pdbc.cli = gowebdav.NewClient(webdavURL, authData.Username, authData.Password)
+	pdbc.cli = gowebdav.NewClient(webdavURL, username, password)
 	return pdbc
 }
 
