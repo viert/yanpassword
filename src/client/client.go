@@ -60,10 +60,12 @@ func Is404(err error) bool {
 	return strings.HasPrefix(pe.Err.Error(), "404")
 }
 
-// Save saves the main passddb file contents, making backups of previous files
+// Save saves the main passdb file contents, making backups of previous files
 func (pdbc *PassdbClient) Save(data []byte) error {
 	var prev string
 	var next string
+
+	// TODO mkdirs
 
 	filename := path.Join(passdbDir, passdbFile)
 	fmt.Printf("Creating backups")

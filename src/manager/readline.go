@@ -2,6 +2,8 @@ package manager
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 	"regexp"
 	"sort"
 	"strings"
@@ -51,8 +53,31 @@ func staticCompleter(variants []string) completeFunc {
 	}
 }
 
+func completeFiles(line []rune) (newLine [][]rune, length int) {
+	ll := len(line)
+	path := string(line)
+	files, err := filepath.Glob(path + "*")
+	if err != nil {
+		return [][]rune{}, len(line)
+	}
+
+	results := make([][]rune, len(files))
+	for i := 0; i < len(files); i++ {
+		filename := files[i]
+		if st, err := os.Stat(filename); err == nil {
+			if st.IsDir() {
+				filename += "/"
+			}
+		}
+		results[i] = []rune(filename[ll:])
+	}
+
+	return results, ll
+}
+
 func newCliCompleter(commands []string) *cliCompleter {
 	c := &cliCompleter{commands, make(map[string]completeFunc)}
+	c.completers["import"] = completeFiles
 	return c
 }
 
@@ -91,6 +116,19 @@ func (c *cliCompleter) completeCommand(line []rune) (newLine [][]rune, length in
 	return toRunes(sr), len(line)
 }
 
+func (m *Manager) nameCompleter() completeFunc {
+	return func(line []rune) (newLine [][]rune, length int) {
+		sr := make([]string, 0)
+		for name := range m.data {
+			if strings.HasPrefix(name, string(line)) {
+				sr = append(sr, name[len(line):])
+			}
+		}
+		sort.Strings(sr)
+		return toRunes(sr), len(line)
+	}
+}
+
 func (m *Manager) setupReadline() error {
 
 	commands := make([]string, len(m.handlers))
@@ -102,6 +140,11 @@ func (m *Manager) setupReadline() error {
 	}
 
 	cc := newCliCompleter(commands)
+	nc := m.nameCompleter()
+	cc.completers["get"] = nc
+	cc.completers["getpass"] = nc
+	cc.completers["set"] = nc
+	cc.completers["setpass"] = nc
 
 	readlineConfig := &readline.Config{
 		InterruptPrompt:   "^C",

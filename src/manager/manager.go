@@ -12,7 +12,16 @@ import (
 	"github.com/chzyer/readline"
 )
 
-type serviceData map[string]*serviceInfo
+type ServiceInfo struct {
+	Name      string `json:"name"`
+	Username  string `json:"username"`
+	Password  string `json:"password"`
+	Comment   string `json:"comment"`
+	UpdatedAt string `json:"updated_at"`
+	URL       string `json:"url"`
+}
+
+type serviceData map[string]*ServiceInfo
 type cmdHandler func(string, string, ...string)
 
 // Manager is the main exported class
@@ -23,15 +32,6 @@ type Manager struct {
 	stopped        bool
 	handlers       map[string]cmdHandler
 	webdavAuthData AuthData
-}
-
-type serviceInfo struct {
-	Name      string `json:"name"`
-	Username  string `json:"username"`
-	Password  string `json:"password"`
-	Comment   string `json:"comment"`
-	UpdatedAt string `json:"updated_at"`
-	URL       string `json:"url"`
 }
 
 // NewManager creates and initializes a new manager instance
@@ -47,26 +47,17 @@ func NewManager() (*Manager, error) {
 
 // Start function gets auth data and starts the manager
 func (m *Manager) Start() error {
+	var err error
 
-	err := m.acquireAuthData()
+	err = m.acquireAuthData()
 	if err != nil {
 		return err
 	}
-	// authData, err := crypter.ReadAuthData(m.masterPassword)
-	// if err != nil {
-	// 	return err
-	// }
 
-	// err = client.CheckAuth(authData)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	return err
-	// }
-
-	// err = m.loadData(authData)
-	// if err != nil {
-	// 	return err
-	// }
+	err = m.acquirePassdb()
+	if err != nil {
+		return err
+	}
 
 	m.setPrompt()
 	m.cmdLoop()

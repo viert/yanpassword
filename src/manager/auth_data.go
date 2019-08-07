@@ -227,12 +227,12 @@ func (m *Manager) loadWebdavAuth() (AuthData, error) {
 
 	authJSON, err := crypter.Decrypt(data, m.masterPassword)
 	if err != nil {
-		term.Errorf("Error decrypting auth ddata file: %s\n", err)
+		term.Errorf("Error decrypting auth data file: %s\n", err)
 		return ad, err
 	}
 	err = json.Unmarshal(authJSON, &ad)
 	if err != nil {
-		term.Errorf("Error unmarshalling auth ddata file: %s\n", err)
+		term.Errorf("Error unmarshalling auth data file: %s\n", err)
 	}
 	return ad, err
 
