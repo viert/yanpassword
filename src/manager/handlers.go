@@ -20,6 +20,10 @@ func (m *Manager) setupHandlers() {
 	m.handlers["getpass"] = m.doGet
 	m.handlers["set"] = m.doSet
 	m.handlers["setpass"] = m.doSet
+	m.handlers["delete"] = m.doDelete
+	m.handlers["remove"] = m.doDelete
+	m.handlers["del"] = m.doDelete
+	m.handlers["rm"] = m.doDelete
 }
 
 func (m *Manager) doExit(name string, argsLine string, args ...string) {
@@ -123,4 +127,54 @@ func (m *Manager) doGet(name string, argsLine string, args ...string) {
 }
 
 func (m *Manager) doSet(name string, argsLine string, args ...string) {
+	if len(args) < 1 {
+		term.Errorf("%s command requires a service name\n", name)
+		return
+	}
+
+	serviceName := args[0]
+
+	switch name {
+	case "setpass":
+		si, found := m.data[serviceName]
+		if !found {
+			term.Errorf(
+				"Service %s not found. If you want to create it, use \"set\" command instead of setpass\n",
+				serviceName,
+			)
+			return
+		}
+
+		pwd, err := getString("Password: ")
+		if err != nil {
+			return
+		}
+		si.Password = pwd
+		term.Successf("Password updated. Don't forget to **save** the result.\n")
+	default:
+		si := &ServiceInfo{Name: serviceName}
+		si.Username, _ = getString("Username: ")
+		si.Password, _ = getString("Password: ")
+		si.Comment, _ = getString("Comment: ")
+		si.URL, _ = getString("URL: ")
+		m.data[serviceName] = si
+		term.Successf("Service %s created. Don't forget to **save** the result.\n", serviceName)
+	}
+}
+
+func (m *Manager) doDelete(name string, argsLine string, args ...string) {
+	if len(args) < 1 {
+		term.Errorf("%s command requires a service name\n", name)
+		return
+	}
+
+	serviceName := args[0]
+	_, found := m.data[serviceName]
+	if !found {
+		term.Errorf("Service %s not found.", serviceName)
+		return
+	}
+
+	delete(m.data, serviceName)
+	term.Successf("Service %s removed. Don't forget to **save** the result.\n", serviceName)
 }

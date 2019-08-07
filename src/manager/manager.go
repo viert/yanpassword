@@ -1,11 +1,13 @@
 package manager
 
 import (
+	"bufio"
 	"client"
 	"crypter"
 	"encoding/json"
 	"fmt"
 	"io"
+	"os"
 	"strings"
 	"term"
 
@@ -138,4 +140,12 @@ func (m *Manager) cmd(line string) {
 	} else {
 		term.Errorf("Unknown command: %s\n", cmd)
 	}
+}
+
+func getString(prompt string) (string, error) {
+	fmt.Print(prompt)
+	rd := bufio.NewReader(os.Stdin)
+	data, err := rd.ReadString('\n')
+	data = strings.TrimSpace(data)
+	return data, err
 }

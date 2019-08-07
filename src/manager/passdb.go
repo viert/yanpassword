@@ -4,6 +4,7 @@ import (
 	"client"
 	"crypter"
 	"encoding/json"
+	"fmt"
 	"term"
 )
 
@@ -13,10 +14,12 @@ func (m *Manager) acquirePassdb() error {
 	var err error
 
 	cli := client.NewPassdbClient(m.webdavAuthData.Username, m.webdavAuthData.Password)
+	fmt.Println("Loading remote data...")
 	data, err = cli.Load()
 	if err != nil {
 		if client.Is404(err) {
 			// data doesn't exist
+			fmt.Println("No remote data found, creating passdb from scratch")
 			m.data = m.createPassdb()
 			return nil
 		}
@@ -42,8 +45,11 @@ func (m *Manager) acquirePassdb() error {
 	err = json.Unmarshal(decrypted, &m.data)
 	if err != nil {
 		term.Errorf("Error unmarshalling yanpassword data: %s\n", err)
+		return err
 	}
-	return err
+
+	term.Successf("Remote data loaded and parsed. %d items in total.\n", len(m.data))
+	return nil
 }
 
 func (m *Manager) createPassdb() serviceData {

@@ -145,6 +145,10 @@ func (m *Manager) setupReadline() error {
 	cc.completers["getpass"] = nc
 	cc.completers["set"] = nc
 	cc.completers["setpass"] = nc
+	cc.completers["delete"] = nc
+	cc.completers["remove"] = nc
+	cc.completers["rm"] = nc
+	cc.completers["del"] = nc
 
 	readlineConfig := &readline.Config{
 		InterruptPrompt:   "^C",
