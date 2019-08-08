@@ -68,3 +68,15 @@ Data is encrypted with AES key based on a MD5 hash of your master password.
 
 - `chpass` command to change the master password from inside the app in a convenient way
 - automatic `updated_at` field to keep track of changes (at the moment the field is not used)
+
+### Migrating
+
+If you were using the python version of yanpassword, the way to migrate is the following:
+
+- checkout the `dataexport` branch of https://github.com/viert/yanpassword-legacy repo
+- run the `yanpassword.py` as usual
+- run the `export` command (available only in `dataexport` branch)
+- save the output json to a file
+- run the brand new yanpassword
+- use the `import <file.json>` command to import the data
+- ensure the data is imported properly and type `save` command to save the result
