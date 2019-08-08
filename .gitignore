@@ -1,6 +1,7 @@
 /bin
 /pkg
 /.vscode
+/yanpassword
 github.com
 gitlab.com
 golang.org
