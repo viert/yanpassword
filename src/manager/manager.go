@@ -24,6 +24,11 @@ type ServiceInfo struct {
 }
 
 type serviceData map[string]*ServiceInfo
+
+func (s *serviceData) dump() ([]byte, error) {
+	return json.Marshal(s)
+}
+
 type cmdHandler func(string, string, ...string)
 
 // Manager is the main exported class

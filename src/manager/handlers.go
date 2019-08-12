@@ -14,6 +14,7 @@ func (m *Manager) setupHandlers() {
 	m.handlers["exit"] = m.doExit
 	m.handlers["save"] = m.doSave
 	m.handlers["import"] = m.doImport
+	m.handlers["export"] = m.doExport
 	m.handlers["list"] = m.doList
 	m.handlers["ls"] = m.doList
 	m.handlers["get"] = m.doGet
@@ -78,6 +79,27 @@ func (m *Manager) doImport(name string, argsLine string, args ...string) {
 	term.Warnf("The imported data is not persistent yet, don't forget to **save** it.\n")
 }
 
+func (m *Manager) doExport(name string, argsLine string, args ...string) {
+	if len(args) < 1 {
+		term.Errorf("Use export <filename> to export data to a json file\n")
+	}
+
+	data, err := m.data.dump()
+	if err != nil {
+		term.Errorf("Error marshaling data: %s\n", err)
+		return
+	}
+
+	filename := args[0]
+	err = ioutil.WriteFile(filename, data, os.FileMode(0644))
+	if err != nil {
+		term.Errorf("Error writing file %s: %s\n", filename, err)
+		return
+	}
+
+	term.Successf("Data has been successfully exported to file %s\n", filename)
+}
+
 func (m *Manager) doList(name string, argsLine string, args ...string) {
 	if len(m.data) > 0 {
 		names := make([]string, len(m.data))
@@ -91,6 +113,8 @@ func (m *Manager) doList(name string, argsLine string, args ...string) {
 		for _, name := range names {
 			fmt.Println(name)
 		}
+	} else {
+		term.Errorf("Empty list\n")
 	}
 }
 
