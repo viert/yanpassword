@@ -1,6 +1,7 @@
 MAIN = src/yanpassword.go
 DEPS = github.com/chzyer/readline \
-		github.com/studio-b12/gowebdav
+		github.com/studio-b12/gowebdav \
+		golang.org/x/crypto/pbkdf2
 
 ENV = GOPATH=$(CURDIR)
 SOURCE = src/yanpassword.go \
