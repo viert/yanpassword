@@ -62,7 +62,7 @@ Remember that backup files remain encrypted with the previous version of MP.
 
 ### Encryption
 
-Data is encrypted with AES key based on a MD5 hash of your master password.
+Data is encrypted with AES key based on a pbkdf2 passkey with a MD5-based salt.
 
 ### Awaited features
 
