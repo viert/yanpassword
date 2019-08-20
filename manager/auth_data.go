@@ -2,15 +2,16 @@ package manager
 
 import (
 	"bufio"
-	"client"
-	"crypter"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"os"
 	"path"
 	"strings"
-	"term"
+
+	"github.com/viert/yanpassword/client"
+	"github.com/viert/yanpassword/crypter"
+	"github.com/viert/yanpassword/term"
 )
 
 const (

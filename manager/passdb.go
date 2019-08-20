@@ -1,11 +1,12 @@
 package manager
 
 import (
-	"client"
-	"crypter"
 	"encoding/json"
 	"fmt"
-	"term"
+
+	"github.com/viert/yanpassword/client"
+	"github.com/viert/yanpassword/crypter"
+	"github.com/viert/yanpassword/term"
 )
 
 func (m *Manager) acquirePassdb() error {

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"manager"
+	"github.com/viert/yanpassword/manager"
 )
 
 func main() {

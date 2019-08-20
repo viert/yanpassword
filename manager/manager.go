@@ -2,16 +2,16 @@ package manager
 
 import (
 	"bufio"
-	"client"
-	"crypter"
 	"encoding/json"
 	"fmt"
 	"io"
 	"os"
 	"strings"
-	"term"
 
 	"github.com/chzyer/readline"
+	"github.com/viert/yanpassword/client"
+	"github.com/viert/yanpassword/crypter"
+	"github.com/viert/yanpassword/term"
 )
 
 type ServiceInfo struct {
