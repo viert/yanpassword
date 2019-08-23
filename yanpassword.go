@@ -9,5 +9,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	m.Start()
+	err = m.Start()
+	if err != nil {
+		panic(err)
+	}
 }

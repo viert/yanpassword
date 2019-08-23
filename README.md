@@ -4,10 +4,10 @@ Yanpassword is a command-line tool for storing services sensitive data in a safe
 
 ### Build
 
-You will need a golang compiler. The building process is as easy as typing these command below:
+You will need a golang compiler. The building process is as easy as typing this command below:
 
 ```
-make deps && make
+go build
 ```
 
 ### How it works
