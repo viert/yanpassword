@@ -8,8 +8,8 @@ import (
 	"crypto/sha1"
 	"encoding/hex"
 	"io"
-	"term"
 
+	"github.com/viert/yanpassword/term"
 	"golang.org/x/crypto/pbkdf2"
 )
 

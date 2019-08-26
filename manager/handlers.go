@@ -6,7 +6,8 @@ import (
 	"io/ioutil"
 	"os"
 	"sort"
-	"term"
+
+	"github.com/viert/yanpassword/term"
 )
 
 func (m *Manager) setupHandlers() {
