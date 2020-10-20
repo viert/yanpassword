@@ -1,5 +1,11 @@
 ## yanpassword
 
+### DEPRECATION WARNING
+Yanpassword is going to break any moment as the Yandex.Disk WebDAV API is deprecated for a while.
+Consider moving to https://github.com/viert/kstore
+
+### Description
+
 Yanpassword is a command-line tool for storing services sensitive data in a safe way backed up by Yandex.Disk storage.
 
 ### Build
@@ -7,7 +13,7 @@ Yanpassword is a command-line tool for storing services sensitive data in a safe
 You will need a golang compiler. The building process is as easy as typing this command below:
 
 ```
-go build
+go build -o yanpassword cmd/yanpassword/main.go
 ```
 
 ### How it works
