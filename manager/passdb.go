@@ -50,6 +50,8 @@ func (m *Manager) acquirePassdb() error {
 	}
 
 	term.Successf("Remote data loaded and parsed. %d items in total.\n", len(m.data))
+    r, err := m.data.dump()
+    fmt.Println(string(r))
 	return nil
 }
 
