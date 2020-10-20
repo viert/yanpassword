@@ -8,6 +8,6 @@ jobs:
       - checkout
       - run:
           name: Build
-          command: go build
+          command: go build -o yanpassword cmd/yanpassword/main.go
       - store_artifacts:
           path: /tmp/build/yanpassword
